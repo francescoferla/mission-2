@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>MISSIONE - ENIGMA 2</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2em;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .container {
+      background-color: #111;
+      border: 2px solid red;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+    }
+    p {
+      font-size: 1.2em;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+    }
+    #feedback {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+    #countdown {
+      color: yellow;
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 MISSIONE: ENIGMA 2</h1>
+  <div class="container" id="enigmaBox">
+    <p>Non importa quanto tu sia di fretta,<br>non esci mai di casa senza la tua…</p>
+    <input type="text" id="answer">
+    <div id="feedback"></div>
+    <div id="countdown"></div>
+  </div>
+
+  <script>
+    const correctAnswer = "BORSETTA";
+    const input = document.getElementById("answer");
+    const feedback = document.getElementById("feedback");
+    const countdown = document.getElementById("countdown");
+    const enigmaBox = document.getElementById("enigmaBox");
+
+    input.addEventListener("input", () => {
+      const userAnswer = input.value.trim().toUpperCase();
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = "✅ Accesso confermato.";
+        feedback.style.color = "lime";
+        startCountdown(15);
+      } else {
+        feedback.textContent = "❌ Accesso negato.";
+        feedback.style.color = "red";
+        countdown.textContent = "";
+      }
+    });
+
+    function startCountdown(seconds) {
+      let remaining = seconds;
+      countdown.textContent = `Il messaggio si autodistruggerà tra ${remaining} secondi...`;
+      const timer = setInterval(() => {
+        remaining--;
+        if (remaining > 0) {
+          countdown.textContent = `Il messaggio si autodistruggerà tra ${remaining} secondi...`;
+        } else {
+          clearInterval(timer);
+          enigmaBox.remove();
+          document.body.innerHTML += "<h2 style='color:lime;'>✅ Missione completata. Procedi al prossimo step.</h2>";
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
